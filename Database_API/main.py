@@ -65,7 +65,7 @@ async def authenticate(request: Request):
 # Define the POST endpoint for login
 @app.get("/login")
 async def login(request: Request, voter_id: str, password: str):
-    await authenticate(request)
+    # await authenticate(request)
     role = await get_role(voter_id, password)
 
     # Assuming authentication is successful, generate a token
