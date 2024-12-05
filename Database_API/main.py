@@ -166,8 +166,7 @@ async def verify_otp(phone_number: str, code: str):
         verification_check = client.verify \
             .services(VERIFY_SERVICE_SID) \
             .verification_checks \
-            .create(to=phone_number, code=code)
-        
+            .create(to="+91"+phone_number, code=code)
         if verification_check.status == 'approved':
             return {"message": "OTP verified successfully"}
         else:
