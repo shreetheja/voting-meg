@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Signup Page</title>
+  <link rel="stylesheet" type="text/css" href="../css/signup.css">
+  <style>
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      color: white;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #007bff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 align="center" style="color: azure;">Decentralized Voting Using Ethereum Blockchain</h1>
+  <div class="container mt-5">
+    <h1>Signup</h1>
+    <div id="wallet-section" style="display: none;">
+      <button type="button" class="btn btn-primary" id="connect-wallet"><b>Connect Wallet</b></button>
+      <p id="wallet-address" style="word-break: break-all; color: white;"></p>
+    </div>
+    <form id="signupForm">
+      <div id="phone-number-section">
+        <div class="form-group">
+          <label for="phone-number"><h3>Phone Number</h3></label>
+          <input type="text" class="form-control" id="phone-number" name="phone-number" placeholder="Enter your phone number">
+        </div>
+        <button type="button" class="btn btn-primary" id="get-otp"><b>Get OTP</b></button>
+      </div>
+
+      <div id="otp-section" style="display: none;">
+        <div class="form-group">
+          <label for="otp"><h3>Enter OTP</h3></label>
+          <input type="text" class="form-control" id="otp" name="otp" placeholder="Enter OTP">
+        </div>
+        <button type="button" class="btn btn-primary" id="verify-otp"><b>Verify OTP</b></button>
+        <a class="back-link" id="back-to-phone">&larr; Back</a>
+      </div>
+
+      <div id="set-password-section" style="display: none;">
+        <div class="form-group">
+          <label for="password"><h3>Set Password</h3></label>
+          <input type="password" class="form-control" id="password" name="password" placeholder="Set your password">
+        </div>
+        <button type="submit" class="btn btn-primary"><b>Complete Signup</b></button>
+        <a class="back-link" id="back-to-otp">&larr; Back</a>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="../js/signup.js" type="module"></script>
+</body>
+
+</html>

@@ -76,24 +76,67 @@ window.App = {
   },
 
   vote: function () {
-    var candidateID = $("input[name='candidate']:checked").val();
-    console.log(candidateID);
-    if (!candidateID) {
-      $("#msg").html("<p>Please vote for a candidate.</p>")
-      return
+    // Validate wallet before proceeding
+    App.validateWallet().then(function (isValid) {
+      if (!isValid) {
+        alert("Wallet connected and voterID do not match please")
+        return;
+      }
+
+      var candidateID = $("input[name='candidate']:checked").val();
+      console.log(candidateID);
+      if (!candidateID) {
+        $("#msg").html("<p>Please vote for a candidate.</p>");
+        return;
+      }
+      console.log("Checking deployment ");
+      VotingContract.deployed().then(function (instance) {
+        console.log("Vote");
+        instance.vote(parseInt(candidateID)).then(function (result) {
+          $("#voteButton").attr("disabled", true);
+          $("#msg").html("<p>Voted</p>");
+          window.location.reload(1);
+        });
+      }).catch(function (err) {
+        console.error("ERROR! " + err.message);
+      });
+    });
+  },
+
+  validateWallet: function () {
+    // Get the connected wallet address
+    const connectedWallet = App.account;
+
+    // Fetch the voter's wallet address via API
+    const voterID = prompt("Please enter your Voter ID for verification:");
+
+    if (!voterID) {
+      $("#msg").html("<p>Voter ID is required for validation.</p>");
+      return false;
     }
-    console.log("Checking deployment ");
-    VotingContract.deployed().then(function (instance) {
-      console.log("Vote");
-      instance.vote(parseInt(candidateID)).then(function (result) {
-        $("#voteButton").attr("disabled", true);
-        $("#msg").html("<p>Voted</p>");
-        window.location.reload(1);
-      })
-    }).catch(function (err) {
-      console.error("ERROR! " + err.message)
-    })
-  }
+
+    const url = `/validate-wallet?voter_id=${voterID}&connected_wallet=${connectedWallet}`;
+
+    return $.ajax({
+      url: url,
+      type: 'GET',
+      success: function (response) {
+        if (response.valid) {
+          console.log("Wallet validation successful.");
+          return true;
+        } else {
+          $("#msg").html("<p>Wallet address does not match. Voting not allowed.</p>");
+          return false;
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error in wallet validation: " + error);
+        $("#msg").html("<p>Error validating wallet address. Please try again.</p>");
+        return false;
+      }
+    });
+  },
+
 }
 
 window.addEventListener("load", function () {

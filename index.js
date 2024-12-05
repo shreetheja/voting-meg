@@ -14,7 +14,7 @@ const authorizeUser = (req, res, next) => {
   if (!token) {
     return res.status(401).send('<h1 align="center"> Login to Continue </h1>');
   }
-  
+
   try {
     // Verify and decode the token
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY, { algorithms: ['HS256'] });
@@ -28,7 +28,23 @@ const authorizeUser = (req, res, next) => {
 
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src/html/login.html'));
+  res.sendFile(path.join(__dirname, 'src/html/index.html'));
+});
+
+app.get('/signup', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src/html/signup.html'));
+});
+
+app.get('/main', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src/html/main.html'));
+});
+
+app.get('/css/signup.css', (req, res) => {
+  res.sendFile(path.join(__dirname, '/src/css/signup.css'));
+});
+
+app.get('/js/signup.js', (req, res) => {
+  res.sendFile(path.join(__dirname, '/src/js/signup.js'));
 });
 
 app.get('/js/login.js', (req, res) => {
@@ -55,11 +71,11 @@ app.get('/js/app.js', (req, res) => {
   res.sendFile(path.join(__dirname, 'src/js/app.js'))
 });
 
-app.get('/admin.html', authorizeUser, (req, res) => {
+app.get('/admin', authorizeUser, (req, res) => {
   res.sendFile(path.join(__dirname, 'src/html/admin.html'));
 });
 
-app.get('/index.html', authorizeUser, (req, res) => {
+app.get('/index', authorizeUser, (req, res) => {
   res.sendFile(path.join(__dirname, 'src/html/index.html'));
 });
 
