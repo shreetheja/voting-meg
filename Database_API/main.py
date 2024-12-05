@@ -140,18 +140,18 @@ client = Client(ACCOUNT_SID, AUTH_TOKEN)
 @app.post("/send-otp")
 async def send_otp(phone_number: str):
     try:
-        # # Send OTP using Twilio Verify Service
-        # verification = client.verify \
-        #     .services(VERIFY_SERVICE_SID) \
-        #     .verifications \
-        #     .create(to="+91"+phone_number, channel='sms')
-        # if verification.status == 'pending':
+        # Send OTP using Twilio Verify Service
+        verification = client.verify \
+            .services(VERIFY_SERVICE_SID) \
+            .verifications \
+            .create(to="+91"+phone_number, channel='sms')
+        if verification.status == 'pending':
             return {"message": "OTP sent successfully"}
-        # else:
-        #     raise HTTPException(
-        #         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        #         detail="Failed to send OTP"
-        #     )
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to send OTP"
+            )
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -162,20 +162,19 @@ async def send_otp(phone_number: str):
 @app.post("/verify-otp")
 async def verify_otp(phone_number: str, code: str):
     try:
-        # # Verify OTP using Twilio Verify Service
-        # verification_check = client.verify \
-        #     .services(VERIFY_SERVICE_SID) \
-        #     .verification_checks \
-        #     .create(to=phone_number, code=code)
+        # Verify OTP using Twilio Verify Service
+        verification_check = client.verify \
+            .services(VERIFY_SERVICE_SID) \
+            .verification_checks \
+            .create(to=phone_number, code=code)
         
-        # if verification_check.status == 'approved':
-        #     return {"message": "OTP verified successfully"}
-        # else:
-        #     raise HTTPException(
-        #         status_code=status.HTTP_400_BAD_REQUEST,
-        #         detail="Invalid or expired OTP"
-        #     )
-        #     return {"message": "OTP verified successfully"}
+        if verification_check.status == 'approved':
+            return {"message": "OTP verified successfully"}
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid or expired OTP"
+            )
         return {"message": "OTP verified successfully"}
     except Exception as e:
         raise HTTPException(
