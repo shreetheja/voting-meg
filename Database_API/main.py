@@ -63,17 +63,16 @@ async def set_password(phone_number: str, password: str,wallet_address: str):
         # Check if the user exists
         cursor.execute("SELECT voter_id FROM voters WHERE phone_number = %s", (phone_number,))
         result = cursor.fetchone()
-        
+        voter_id = f"VOTER{random.randint(1000, 9999)}"  # Generate a unique Voter ID
         if result:
             # Update the password for existing user
             cursor.execute(
-                "UPDATE voters SET password = %s,address = %s WHERE phone_number = %s",
-                (password, phone_number,wallet_address)
+                "UPDATE voters SET password = %s,address = %s,voter_id=%s WHERE phone_number = %s",
+                (password, wallet_address, voter_id, phone_number)
             )
             message = "Password updated successfully. You can now log in."
         else:
             # Insert a new user record
-            voter_id = f"VOTER{random.randint(1000, 9999)}"  # Generate a unique Voter ID
             cursor.execute(
                 "INSERT INTO voters (voter_id, phone_number, password, role, address) VALUES (%s, %s, %s, %s, %s)",
                 (voter_id, phone_number, password, "user",wallet_address)
@@ -83,7 +82,7 @@ async def set_password(phone_number: str, password: str,wallet_address: str):
         # Commit changes to the database
         cnx.commit()
 
-        return {"message": message}
+        return {"message": message,"voter_id":voter_id}
     except mysql.connector.Error as err:
         print(err)
         raise HTTPException(

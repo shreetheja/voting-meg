@@ -7,7 +7,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 90vh;
-    background: url('../assets/eth5.jpg') no-repeat center center fixed;
+    background: url('../assets/eth5.jpg') no-repeat;
     background-size: cover;
   }
   
@@ -29,7 +29,7 @@ body {
   
   .form-group {
     margin-bottom: 20px;
-    width: 100%;
+    width: 95%;
   }
   
   label {

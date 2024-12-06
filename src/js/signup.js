@@ -131,8 +131,8 @@ signupForm.addEventListener('submit', (event) => {
             }
         })
         .then(data => {
-            alert('Signup successful! Redirecting to login...');
-            window.location.replace('index');
+            alert('Signup successful! \n Your VoterId : ' + data.voter_id + '\nRedirecting to login...');
+            window.location.replace('/');
         })
         .catch(error => {
             console.error('Error:', error.message);

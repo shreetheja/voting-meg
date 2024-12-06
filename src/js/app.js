@@ -24,8 +24,9 @@ window.App = {
           $('#addCandidate').click(function () {
             var nameCandidate = $('#name').val();
             var partyCandidate = $('#party').val();
+            var partySymbol = $('#symbol').val();
+            partyCandidate = partySymbol + ":_:" + partyCandidate
             instance.addCandidate(nameCandidate, partyCandidate).then(function (result) { })
-
           });
           $('#addDate').click(function () {
             var startDate = Date.parse(document.getElementById("startDate").value) / 1000;
@@ -52,9 +53,17 @@ window.App = {
           instance.getCandidate(i + 1).then(function (data) {
             var id = data[0];
             var name = data[1];
-            var party = data[2];
+            var party_name;
+            var party_symbol;
+            var partyArr = data[2].split(":_:",);
+            if (partyArr.length == 1) {
+              party_name = partyArr[0];
+            } else if (partyArr.length == 2) {
+              party_symbol = partyArr[1];
+              party_name = partyArr[0];
+            }
             var voteCount = data[3];
-            var viewCandidates = `<tr><td> <input class="form-check-input" type="radio" name="candidate" value="${id}" id=${id}>` + name + "</td><td>" + party + "</td><td>" + voteCount + "</td></tr>"
+            var viewCandidates = `<tr><td> <input class="form-check-input" type="radio" name="candidate" value="${id}" id=${id}>` + name + "</td><td>" + party_name + "</td><td>" + party_symbol + "</td><td>" + voteCount + "</td></tr>"
             $("#boxCandidate").append(viewCandidates)
           })
         }
@@ -115,7 +124,7 @@ window.App = {
       return false;
     }
 
-    const url = `/validate-wallet?voter_id=${voterID}&connected_wallet=${connectedWallet}`;
+    const url = `http://127.0.0.1:8000/validate-wallet?voter_id=${voterID}&connected_wallet=${connectedWallet}`;
 
     return $.ajax({
       url: url,
